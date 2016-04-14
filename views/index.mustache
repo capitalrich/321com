@@ -18,11 +18,6 @@
 					<fieldset class="form-group">
 					    <label for="skill">Search by skill</label></br>
 					    <select class="form-control" id="skill">
-					    <!-- Mustache: a template engine
-							working with the objects passed from the server
-							you can learn more about mustache at
-							https://mustache.github.io/mustache.5.html
-					     -->
 					      {{#skills}}
 					      	<option>{{name}}</option>
 					      {{/skills}}
@@ -108,11 +103,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
 
 <script>
-
-	/* On sumbit, send a request to the API with a value,
-		if successful log details,
-		on completion send a request to result page and print result
-	*/
+	var d = $("#skillform button");
 	$("#skillsform").submit(function(e){
 		e.preventDefault()
 		if (skill.value != '')
@@ -121,7 +112,7 @@
 				url: '/api/getPersonBySkill/'+skill.value,
 				type: 'get',
 				success: function(data, status){
-					console.log(data); // Check console log
+					//console.log(data);
 				},
 				complete: function(data, status){
 					$.get( "/result", function( node ) {
@@ -132,14 +123,6 @@
 		}
 	})
 
-	/* On submit, prevent page from refreshing,
-		prepare request to send to api,
-		store and assign form variable,
-		log data on success,
-		display different prompts based on http status code
-			- you can learn more about http status codes by googling it,
-		if there is an error log details
-	*/
 	$("#registerform").submit(function(e){
 		e.preventDefault()
 		$.ajax({
@@ -180,7 +163,6 @@
 			})
 	})
 
-	// A function that adds new skills to the skills option
 	function skillAppend(){
 		var l = $('#skill option').length
 						var skillExist = false
