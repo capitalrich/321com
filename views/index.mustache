@@ -1,0 +1,204 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Scorpio</h1>
+			<h2>Allowing students and lecturers to interact with the use of a database and the cortex api</h2>
+		</div>
+
+		<h2>Please use the form below to search for lecturers</h2>
+
+		<div class="row">
+		<div class='col-md-6'>
+			<div style="border:solid #eceeef; padding:20px;">
+				<form id='skillsform'>
+					<fieldset class="form-group">
+					    <label for="skill">Search by skill</label></br>
+					    <select class="form-control" id="skill">
+					    <!-- Mustache: a template engine
+							working with the objects passed from the server
+							you can learn more about mustache at
+							https://mustache.github.io/mustache.5.html
+					     -->
+					      {{#skills}}
+					      	<option>{{name}}</option>
+					      {{/skills}}
+				    	</select>
+				  	</fieldset>
+				  	<button type="submit" id="submit" class="btn btn-primary">Search</button>
+				</form>
+		 	</div>
+	 	</div>
+
+	 	<div id="result" class="col-md-6">
+	
+
+		</div>
+		</div>
+
+		<h2 style="margin-top: 40px">Register as a lecturer</h2>
+		<div class="row">
+		<div class="col-md-6">
+		<div style="border:solid #eceeef; padding:20px;">
+		<form id='registerform'>
+			<fieldset class="form-group">
+				<div class="row">			
+					<div class="col-xs-4">
+						<label for="name">Name</label>
+						<input id='regname' type="text" class="form-control" placeholder="Name" required>
+					</div>
+					<div class="col-xs-6">
+						<label for="regemail">Email</label>
+						<input id='regemail' type="email" class="form-control" placeholder="Enter email" required>
+					</div>			  
+				</div>
+			</fieldset>
+			<fieldset class="form-group">
+			    <label for="exampleInputEmail1">Username</label>
+			    <input type="text" class="form-control" id="reguser" placeholder="Username" required>
+			  </fieldset>
+			  <fieldset class="form-group">
+			    <label for="exampleInputPassword1">Password</label>
+			    <input type="password" class="form-control" id="regpass" placeholder="Password" required>
+			</fieldset>
+			<fieldset class="form-group">
+			    <label for="exampleInputEmail1">Skills</label>
+			    <input type="text" class="form-control" id="regskills" placeholder="Enter skills" required>
+			    <small class="text-muted">Seperate skills using comma</small>
+			  </fieldset>
+			  <fieldset class="form-group">
+			  	<label>Are you a lecturer</label><br>
+				  <div class="radio-inline">
+				    <label>
+				      <input type="radio" name="optionsRadios" id="optionsRadios1" value="true" required>
+				      Yes
+				    </label>
+				  </div>
+				  <div class="radio">
+				    <label>
+				      <input type="radio" name="optionsRadios" id="optionsRadios2" value="">
+				      No
+				    </label>
+				  </div>
+			  </fieldset>
+
+			  <button type="submit" id="register" class="btn btn-primary">Register</button>
+
+		</form>
+		</div>
+		</div>
+
+		<div id="regresult" class="col-md-6">
+			{{> modals}}
+		</div>
+
+
+		</div>
+
+	</div>
+
+
+
+
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+
+<script>
+
+	/* On sumbit, send a request to the API with a value,
+		if successful log details,
+		on completion send a request to result page and print result
+	*/
+	$("#skillsform").submit(function(e){
+		e.preventDefault()
+		if (skill.value != '')
+		{
+			a = $.ajax({
+				url: '/api/getPersonBySkill/'+skill.value,
+				type: 'get',
+				success: function(data, status){
+					console.log(data); // Check console log
+				},
+				complete: function(data, status){
+					$.get( "/result", function( node ) {
+					  $( "#result" ).html( node );
+					});
+				}
+			})
+		}
+	})
+
+	/* On submit, prevent page from refreshing,
+		prepare request to send to api,
+		store and assign form variable,
+		log data on success,
+		display different prompts based on http status code
+			- you can learn more about http status codes by googling it,
+		if there is an error log details
+	*/
+	$("#registerform").submit(function(e){
+		e.preventDefault()
+		$.ajax({
+				url: '/api/addNewPerson	',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					name:regname.value,
+					email:regemail.value,
+					username:reguser.value,
+					password:regpass.value,
+					skills:regskills.value,
+					lecturer: registerform.optionsRadios.value
+				},
+				success: function(data, status){
+					console.log(data);
+				},
+				complete: function(data, status){
+					console.log(data)
+					if (data.status == 201)
+					{
+						$('#successModal').modal('show')
+						skillAppend()
+						$('#registerform').trigger('reset')
+					}
+					else if (data.status == 400)
+					{
+						$('#errorModal').modal('show')
+					}
+					else
+					{
+						$('#failureModal').modal('show')
+					}
+				},
+				error: function(data, status){
+					console.log(data);
+				}
+			})
+	})
+
+	// A function that adds new skills to the skills option
+	function skillAppend(){
+		var l = $('#skill option').length
+						var skillExist = false
+						for (var i = 0; i < l; i++)
+						{
+							if ($('#skill option')[i].value == regskills.value){
+								skillExist = true
+							}
+						}
+						if (skillExist == false){
+							$('#skill').append('<option>'+regskills.value+'</option>')
+						}
+	}
+
+
+		
+
+	</script>
+
+</body>
+</html>

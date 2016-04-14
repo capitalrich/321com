@@ -1,0 +1,58 @@
+{
+   "Monday":[
+      {
+         "9-10":{
+            "Name":"Leon Smalov"
+         },
+         "10-11":{
+            "Name":"Bob Bird"
+         },
+         "11-12":{
+            "Name":"Mark Tyers"
+         },
+         "12-13":{
+            "Name":"John Halloran"
+         },
+         "13-14":{
+            "Name":"Faiyaz Doctor"
+         },
+         "14-15":{
+            "Name":"Neophytos Lophitis"
+         },
+         "15-16":{
+            "Name":"Saad Amin"
+         },
+         "16-17":{
+            "Name":"Norlaily Yaacob"
+         }
+      }
+   ],
+   "Tuesday":[
+      {
+         "9-10":{
+            "Name":"Rabat Iqbal"
+         },
+         "10-11":{
+            "Name":"James Shuttleworth"
+         },
+         "11-12":{
+            "Name":"Michael Odetayo"
+         },
+         "12-13":{
+            "Name":"Siraj Shaikh"
+         },
+         "13-14":{
+            "Name":"Nazaraf Shah"
+         },
+         "14-15":{
+            "Name":"Anne James"
+         },
+         "15-16":{
+            "Name":"Norlaily Yaacob"
+         },
+         "16-17":{
+            "Name":"Omar Salih"
+         }
+      }
+   ]
+}

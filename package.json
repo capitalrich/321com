@@ -1,0 +1,39 @@
+{
+  "name": "321com",
+  "version": "1.0.0",
+  "description": "321COM API",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node spec --color --verbose --noStack --autotest --watch .",
+    "coverage": "istanbul cover -x **/spec/** -x **index.js** --include-all-sources jasmine-node spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/gbhopal/321COM.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/gbhopal/321COM/issues"
+  },
+  "homepage": "https://gitlab.com/gbhopal/321COM#README",
+  "dependencies": {
+    "csprng": "^0.1.1",
+    "jsonwebtoken": "^5.7.0",
+    "node-neo4j": "^2.0.3",
+    "node-persist": "0.0.8",
+    "nodemon": "^1.8.1",
+    "request": "^2.69.0",
+    "restify": "^4.0.3",
+    "restify-route": "0.0.6",
+    "xmlbuilder": "^4.2.1",
+    "base64url": "~1.0.6"
+  },
+  "devDependencies": {
+    "frisby": "^0.8.5",
+    "fs": "0.0.2",
+    "istanbul": "^0.4.2",
+    "jasmine-node": "^1.14.5",
+    "rewire": "^2.5.1"
+  }
+}
